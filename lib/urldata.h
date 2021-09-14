@@ -224,6 +224,7 @@ struct ssl_primary_config {
   long version_max;      /* max supported version the client wants to use*/
   char *CApath;          /* certificate dir (doesn't work on windows) */
   char *CAfile;          /* certificate to verify peer against */
+  char *issuercert;      /* optional issuer certificate filename */
   char *clientcert;
   char *random_file;     /* path to file containing "random" data */
   char *egdsocket;       /* path to file containing the EGD daemon socket */
@@ -240,7 +241,6 @@ struct ssl_config_data {
   struct ssl_primary_config primary;
   long certverifyresult; /* result from the certificate verification */
   char *CRLfile;   /* CRL to check certificate revocation */
-  char *issuercert;/* optional issuer certificate filename */
   curl_ssl_ctx_callback fsslctx; /* function to initialize ssl ctx */
   void *fsslctxp;        /* parameter for call back */
   char *cert; /* client certificate file name */

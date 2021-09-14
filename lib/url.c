@@ -3520,6 +3520,8 @@ static CURLcode create_conn(struct Curl_easy *data,
   data->set.proxy_ssl.primary.CApath = data->set.str[STRING_SSL_CAPATH_PROXY];
   data->set.ssl.primary.CAfile = data->set.str[STRING_SSL_CAFILE_ORIG];
   data->set.proxy_ssl.primary.CAfile = data->set.str[STRING_SSL_CAFILE_PROXY];
+  data->set.ssl.primary.issuercert = data->set.str[STRING_SSL_ISSUERCERT_ORIG];
+  data->set.proxy_ssl.primary.issuercert = data->set.str[STRING_SSL_ISSUERCERT_PROXY];
   data->set.ssl.primary.random_file = data->set.str[STRING_SSL_RANDOM_FILE];
   data->set.proxy_ssl.primary.random_file =
     data->set.str[STRING_SSL_RANDOM_FILE];
@@ -3540,8 +3542,6 @@ static CURLcode create_conn(struct Curl_easy *data,
 
   data->set.ssl.CRLfile = data->set.str[STRING_SSL_CRLFILE_ORIG];
   data->set.proxy_ssl.CRLfile = data->set.str[STRING_SSL_CRLFILE_PROXY];
-  data->set.ssl.issuercert = data->set.str[STRING_SSL_ISSUERCERT_ORIG];
-  data->set.proxy_ssl.issuercert = data->set.str[STRING_SSL_ISSUERCERT_PROXY];
   data->set.ssl.cert = data->set.str[STRING_CERT_ORIG];
   data->set.proxy_ssl.cert = data->set.str[STRING_CERT_PROXY];
   data->set.ssl.cert_type = data->set.str[STRING_CERT_TYPE_ORIG];

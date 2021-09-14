@@ -2151,9 +2151,9 @@ static CURLcode nss_do_connect(struct connectdata *conn, int sockindex)
   if(result)
     goto error;
 
-  if(SSL_SET_OPTION(issuercert)) {
+  if(SSL_CONN_CONFIG(issuercert)) {
     SECStatus ret = SECFailure;
-    char *nickname = dup_nickname(data, SSL_SET_OPTION(issuercert));
+    char *nickname = dup_nickname(data, SSL_CONN_CONFIG(issuercert));
     if(nickname) {
       /* we support only nicknames in case of issuercert for now */
       ret = check_issuer_cert(BACKEND->handle, nickname);

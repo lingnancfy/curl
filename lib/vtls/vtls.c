@@ -82,6 +82,15 @@
   else                                       \
     dest->var = NULL;
 
+static bool safecmp(char *a, char *b)
+{
+  if(a && b)
+    return !strcmp(a, b);
+  else if(!a && !b)
+    return TRUE; /* match */
+  return FALSE; /* no match */
+}
+
 bool
 Curl_ssl_config_matches(struct ssl_primary_config* data,
                         struct ssl_primary_config* needle)
@@ -91,11 +100,12 @@ Curl_ssl_config_matches(struct ssl_primary_config* data,
      (data->verifypeer == needle->verifypeer) &&
      (data->verifyhost == needle->verifyhost) &&
      (data->verifystatus == needle->verifystatus) &&
-     Curl_safe_strcasecompare(data->CApath, needle->CApath) &&
-     Curl_safe_strcasecompare(data->CAfile, needle->CAfile) &&
-     Curl_safe_strcasecompare(data->clientcert, needle->clientcert) &&
-     Curl_safe_strcasecompare(data->random_file, needle->random_file) &&
-     Curl_safe_strcasecompare(data->egdsocket, needle->egdsocket) &&
+     safecmp(data->CApath, needle->CApath) &&
+     safecmp(data->CAfile, needle->CAfile) &&
+     safecmp(data->issuercert, needle->issuercert) &&
+     safecmp(data->clientcert, needle->clientcert) &&
+     safecmp(data->random_file, needle->random_file) &&
+     safecmp(data->egdsocket, needle->egdsocket) &&
      Curl_safe_strcasecompare(data->cipher_list, needle->cipher_list) &&
      Curl_safe_strcasecompare(data->cipher_list13, needle->cipher_list13) &&
      Curl_safe_strcasecompare(data->pinned_key, needle->pinned_key))
@@ -117,6 +127,7 @@ Curl_clone_primary_ssl_config(struct ssl_primary_config *source,
 
   CLONE_STRING(CApath);
   CLONE_STRING(CAfile);
+  CLONE_STRING(issuercert);
   CLONE_STRING(clientcert);
   CLONE_STRING(random_file);
   CLONE_STRING(egdsocket);
@@ -131,6 +142,7 @@ void Curl_free_primary_ssl_config(struct ssl_primary_config* sslc)
 {
   Curl_safefree(sslc->CApath);
   Curl_safefree(sslc->CAfile);
+  Curl_safefree(sslc->issuercert);
   Curl_safefree(sslc->clientcert);
   Curl_safefree(sslc->random_file);
   Curl_safefree(sslc->egdsocket);

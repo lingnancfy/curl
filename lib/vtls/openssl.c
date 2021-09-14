@@ -3539,7 +3539,7 @@ static CURLcode servercert(struct connectdata *conn,
        deallocating the certificate. */
 
     /* e.g. match issuer name with provided issuer certificate */
-    if(SSL_SET_OPTION(issuercert)) {
+    if(SSL_CONN_CONFIG(issuercert)) {
       fp = BIO_new(BIO_s_file());
       if(fp == NULL) {
         failf(data,
@@ -3552,10 +3552,10 @@ static CURLcode servercert(struct connectdata *conn,
         return CURLE_OUT_OF_MEMORY;
       }
 
-      if(BIO_read_filename(fp, SSL_SET_OPTION(issuercert)) <= 0) {
+      if(BIO_read_filename(fp, SSL_CONN_CONFIG(issuercert)) <= 0) {
         if(strict)
           failf(data, "SSL: Unable to open issuer cert (%s)",
-                SSL_SET_OPTION(issuercert));
+                SSL_CONN_CONFIG(issuercert));
         BIO_free(fp);
         X509_free(BACKEND->server_cert);
         BACKEND->server_cert = NULL;
@@ -3566,7 +3566,7 @@ static CURLcode servercert(struct connectdata *conn,
       if(!issuer) {
         if(strict)
           failf(data, "SSL: Unable to read issuer cert (%s)",
-                SSL_SET_OPTION(issuercert));
+                SSL_CONN_CONFIG(issuercert));
         BIO_free(fp);
         X509_free(issuer);
         X509_free(BACKEND->server_cert);
@@ -3577,7 +3577,7 @@ static CURLcode servercert(struct connectdata *conn,
       if(X509_check_issued(issuer, BACKEND->server_cert) != X509_V_OK) {
         if(strict)
           failf(data, "SSL: Certificate issuer check failed (%s)",
-                SSL_SET_OPTION(issuercert));
+                SSL_CONN_CONFIG(issuercert));
         BIO_free(fp);
         X509_free(issuer);
         X509_free(BACKEND->server_cert);
@@ -3586,7 +3586,7 @@ static CURLcode servercert(struct connectdata *conn,
       }
 
       infof(data, " SSL certificate issuer check ok (%s)\n",
-            SSL_SET_OPTION(issuercert));
+            SSL_CONN_CONFIG(issuercert));
       BIO_free(fp);
       X509_free(issuer);
     }
